@@ -2,14 +2,14 @@ import '../lib/fukiya.dart';
 import 'dart:io';
 
 void main() {
-  Fukiya app = new Fukiya();
-  app.get('/', getHandler);
-  app.put('/', putHandler);
-  app.delete('/', deleteHandler);
-  app.post('/', postHandler);
-  app.get('/:userid', getDynamicHandler);
-  app.staticFiles('./test/static');
-  app.listen('127.0.0.1', 3333);
+  new Fukiya()
+    ..get('/', getHandler)
+    ..put('/', putHandler)
+    ..delete('/', deleteHandler)
+    ..post('/', postHandler)
+    ..get('/:userid', getDynamicHandler)
+    ..staticFiles('./test/static')
+    ..listen('127.0.0.1', 3333);
 }
 
 void getHandler(HttpRequest req, HttpResponse res) {

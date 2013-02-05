@@ -5,14 +5,14 @@ Simple framework for making dart server applications easier to write. Long way t
 Example usage:
 ```dart
 void main() {
-  Fukiya app = new Fukiya();
-  app.get('/', getHandler);
-  app.put('/', putHandler);
-  app.delete('/', deleteHandler);
-  app.post('/', postHandler);
-  app.get('/:userid',dynamicHandler);
-  app.staticFiles('./static');
-  app.listen('127.0.0.1', 3333);
+  new Fukiya()
+    ..get('/', getHandler)
+    ..put('/', putHandler)
+    ..delete('/', deleteHandler)
+    ..post('/', postHandler)
+    ..get('/:userid', getDynamicHandler)
+    ..staticFiles('./test/static')
+    ..listen('127.0.0.1', 3333);
 }
 ```
 
