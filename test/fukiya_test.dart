@@ -7,7 +7,8 @@ void main() {
   app.put('/', putHandler);
   app.delete('/', deleteHandler);
   app.post('/', postHandler);
-  app.staticFiles('./static');
+  app.get('/:userid', getDynamicHandler);
+  app.staticFiles('./test/static');
   app.listen('127.0.0.1', 3333);
 }
 
@@ -28,5 +29,10 @@ void deleteHandler(HttpRequest req, HttpResponse res) {
 
 void postHandler(HttpRequest req, HttpResponse res) {
   res.outputStream.writeString("POST OK", Encoding.UTF_8);
+  res.outputStream.close();
+}
+
+void getDynamicHandler(HttpRequest req, HttpResponse res) {
+  res.outputStream.writeString("Dynamic OK ${req.queryParameters['userid']}", Encoding.UTF_8);
   res.outputStream.close();
 }

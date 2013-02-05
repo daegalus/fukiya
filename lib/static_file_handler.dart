@@ -9,7 +9,6 @@ class StaticFileHandler {
 
   onRequest(HttpRequest request, HttpResponse response) {
     var file = new File(_staticPath.concat(request.uri));
-
     file.exists().then((found) {
       if (found && request.method == "GET") {
         file.readAsBytes().then((value) {

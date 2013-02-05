@@ -10,6 +10,30 @@ class MethodMatcher {
   }
 
   bool method_matcher(HttpRequest request) {
-     return (request.method == _method && request.path == _path);
+    if(request.method == _method) {
+      List<String> pathSegments = _path.split('/');
+      List<String> reqPathSegments = request.path.split('/');
+
+      if(pathSegments.length == reqPathSegments.length) {
+        for(int i = 0; i<pathSegments.length; i++) {
+          String pathSegment = pathSegments[i];
+          String reqPathSegment = reqPathSegments[i];
+          bool matched = _match(pathSegment, reqPathSegment, request);
+          if(!matched)
+            return false;
+        }
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  bool _match(String pathNode, String reqNode, HttpRequest request) {
+    if (pathNode.startsWith(':') && reqNode != 'favicon.ico') {
+      request.queryParameters[pathNode.replaceAll(':', '')] = reqNode;
+      return true;
+    }
+    return (pathNode.startsWith(':') && reqNode != 'favicon.ico') ? true : pathNode == reqNode;
   }
 }
