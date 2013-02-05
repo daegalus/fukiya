@@ -10,12 +10,11 @@ void main() {
   app.put('/', putHandler);
   app.delete('/', deleteHandler);
   app.post('/', postHandler);
+  app.get('/:userid',dynamicHandler);
   app.staticFiles('./static');
   app.listen('127.0.0.1', 3333);
 }
 ```
-
-The Paths are currently simple strings, it doesn't support regex, or complex pathing yet.
 
 Possible TODOs
 ==============
