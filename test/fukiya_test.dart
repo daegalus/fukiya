@@ -12,27 +12,22 @@ void main() {
     ..listen('127.0.0.1', 3333);
 }
 
-void getHandler(HttpRequest req, HttpResponse res) {
-  res.outputStream.writeString("GET OK", Encoding.UTF_8);
-  res.outputStream.close();
+void getHandler(FukiyaContext context) {
+  context.send("GET OK");
 }
 
-void putHandler(HttpRequest req, HttpResponse res) {
-  res.outputStream.writeString("PUT OK", Encoding.UTF_8);
-  res.outputStream.close();
+void putHandler(FukiyaContext context) {
+  context.send("PUT OK");
 }
 
-void deleteHandler(HttpRequest req, HttpResponse res) {
-  res.outputStream.writeString("DELETE OK", Encoding.UTF_8);
-  res.outputStream.close();
+void deleteHandler(FukiyaContext context) {
+  context.send("DELETE OK");
 }
 
-void postHandler(HttpRequest req, HttpResponse res) {
-  res.outputStream.writeString("POST OK", Encoding.UTF_8);
-  res.outputStream.close();
+void postHandler(FukiyaContext context) {
+  context.send("POST OK");
 }
 
-void getDynamicHandler(HttpRequest req, HttpResponse res) {
-  res.outputStream.writeString("Dynamic OK ${req.queryParameters['userid']}", Encoding.UTF_8);
-  res.outputStream.close();
+void getDynamicHandler(FukiyaContext context) {
+  context.send("Dynamic OK ${context.params['userid']}");
 }

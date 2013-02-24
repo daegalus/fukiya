@@ -1,48 +1,53 @@
 library fukiya;
 import 'dart:io';
 import 'dart:collection';
-part 'method_matcher.dart';
-part 'static_file_handler.dart';
+import 'dart:async';
+part 'fukiya_request_handler.dart';
+part 'fukiya_router.dart';
+part 'fukiya_context.dart';
 
 class Fukiya {
   HttpServer _server;
+  Router _router;
 
   Fukiya() {
-    _server = new HttpServer();
+    _router = new Router();
   }
 
   void get(String path, Function handler) {
-    MethodMatcher getMatcher = new MethodMatcher("GET", path);
-    _server.addRequestHandler(getMatcher.method_matcher, handler);
+    _router.addRoute("GET", path, handler);
   }
 
   void post(String path, Function handler) {
-    MethodMatcher postMatcher = new MethodMatcher("POST", path);
-    _server.addRequestHandler(postMatcher.method_matcher, handler);
+    _router.addRoute("POST", path, handler);
   }
 
   void put(String path, Function handler) {
-    MethodMatcher putMatcher = new MethodMatcher("PUT", path);
-    _server.addRequestHandler(putMatcher.method_matcher, handler);
+    _router.addRoute("PUT", path, handler);
   }
 
   void delete(String path, Function handler) {
-    MethodMatcher deleteMatcher = new MethodMatcher("DELETE", path);
-    _server.addRequestHandler(deleteMatcher.method_matcher, handler);
+    _router.addRoute("DELETE", path, handler);
   }
 
   void staticFiles(String basePath) {
-    _server.defaultRequestHandler = (new StaticFileHandler(basePath)).onRequest;
+    _router.useStaticFileHandling = true;
+    _router.staticFilePath = basePath;
   }
 
   void listen(host, port) {
-    _server.listen(host, port);
-    print("[Fukiya] Listening at ${host} on port ${port}");
-  }
+    HttpServer.bind(host, port).then((HttpServer httpServer) {
+      _server = httpServer;
 
-  void listenOn(ServerSocket serverSocket) {
-    _server.listenOn(serverSocket);
-    print("[Fukiya] Listening on port ${serverSocket.port}");
+      _server.listen((HttpRequest request) {
+        FukiyaContext context = new FukiyaContext(request);
+        _router.route(context);
+      }, onError: (error) {
+        print("[Fukiya] Error: ${error.stackTrace}");
+      });
+
+      print("[Fukiya] Listening at ${host} on port ${port}");
+    });
   }
 
   HttpServer httpServer() {
