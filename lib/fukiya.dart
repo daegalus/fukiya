@@ -5,13 +5,19 @@ import 'dart:async';
 part 'fukiya_request_handler.dart';
 part 'fukiya_router.dart';
 part 'fukiya_context.dart';
+part 'fukiya_middle.dart';
+part 'middleware/fukiya_middleware.dart';
+part 'middleware/fukiya_formparser.dart';
+part 'middleware/fukiya_closer.dart';
 
 class Fukiya {
   HttpServer _server;
-  Router _router;
+  FukiyaRouter _router;
+  FukiyaMiddle _middle;
 
   Fukiya() {
-    _router = new Router();
+    _router = new FukiyaRouter();
+    _middle = new FukiyaMiddle();
   }
 
   void get(String path, Function handler) {
@@ -36,18 +42,26 @@ class Fukiya {
   }
 
   void listen(host, port) {
+    use(new FukiyaCloser());
     HttpServer.bind(host, port).then((HttpServer httpServer) {
       _server = httpServer;
 
       _server.listen((HttpRequest request) {
         FukiyaContext context = new FukiyaContext(request);
-        _router.route(context);
+        _middle.process(context).then((innerContext) {
+          _router.route(innerContext);
+        });
+
       }, onError: (error) {
         print("[Fukiya] Error: ${error.stackTrace}");
       });
 
       print("[Fukiya] Listening at ${host} on port ${port}");
     });
+  }
+
+  void use(FukiyaMiddleware middleware) {
+    _middle.add(middleware);
   }
 
   HttpServer httpServer() {

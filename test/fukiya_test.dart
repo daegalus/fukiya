@@ -9,6 +9,7 @@ void main() {
     ..post('/', postHandler)
     ..get('/:userid', getDynamicHandler)
     ..staticFiles('./test/static')
+    ..use(new FukiyaFormParser())
     ..listen('127.0.0.1', 3333);
 }
 
@@ -25,6 +26,7 @@ void deleteHandler(FukiyaContext context) {
 }
 
 void postHandler(FukiyaContext context) {
+  print(context.parsedBody);
   context.send("POST OK");
 }
 

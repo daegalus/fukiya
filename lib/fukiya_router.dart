@@ -1,11 +1,11 @@
 part of fukiya;
 
-class Router {
+class FukiyaRouter {
   List<FukiyaRequestHandler> _routes;
   bool useStaticFileHandling;
   String staticFilePath;
 
-  Router() {
+  FukiyaRouter() {
     _routes = new List<FukiyaRequestHandler>();
     useStaticFileHandling = false;
     staticFilePath = "";

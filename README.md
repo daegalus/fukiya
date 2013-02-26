@@ -15,12 +15,17 @@ void main() {
     ..post('/', postHandler)
     ..get('/:userid', getDynamicHandler)
     ..staticFiles('./test/static')
+    ..use(new FukiyaFormParser())
     ..listen('127.0.0.1', 3333);
 }
 ```
 
 Changes
 =======
+v0.0.4
+- Middleware support.
+- Form Parsing. UrlEncoded and MultiPart (MultiPart is very poorly implemented, and hacky, expect bugs.)
+
 v0.0.3
 - Updated for M3. Current changes made it MUCH easier to wrap things and route.
 - Added FukiyaContext that can be used to store Middleware data. More on that in future versions.
@@ -35,9 +40,7 @@ v0.0.1
 
 TODOs
 =====
-1. Form handling.
 2. JSON Handling.
-3. Middleware Support
 
 Known Bugs
 ==========
