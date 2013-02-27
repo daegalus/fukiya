@@ -1,6 +1,7 @@
 part of fukiya;
 
 class FukiyaFormParser implements FukiyaMiddleware {
+
   String getName() {
     return "FukiyaFormParser";
   }
@@ -20,15 +21,17 @@ class FukiyaFormParser implements FukiyaMiddleware {
   }
 
   void _parseMultiPartBody(FukiyaContext context, Completer completer) {
+    var state = 0;
     List<String> lines = new List<String>();
     context.request.transform(new StringDecoder())
                    .transform(new LineTransformer())
                    .listen((String line) {
-                     lines.add(line);
+                     state = _readMultiPartBody(line, context, state);
                    },
                    onError: (e) => print("[Fukiya][FormParser]${e}"),
                    onDone: () {
-                     _readMultiPartBody(lines, context);
+                     context.parsedBody.remove('currentName');
+                     context.parsedBody.remove('boundary');
                      completer.complete(context);
                    });
   }
@@ -47,61 +50,81 @@ class FukiyaFormParser implements FukiyaMiddleware {
                    });
   }
 
-  void _readMultiPartBody(List<String> content, FukiyaContext context) {
-    Map formMap = new HashMap();
-    String seperator = context.request.headers.contentType.parameters['boundary'];
+  const BOUNDARY = 0;
+  const HEADER_FIELD = 1;
+  const PART_FIELD_DATA = 2;
+  const PART_FILE_DATA = 3;
+  const END = 4;
 
-    List<String> segment = new List<String>();
-    bool insideSegment = false;
-    var disposition = "";
-    var name = "";
-    var filename="";
-    var fileContentType="";
-    var fileContentTransfer="";
-    for(String line in content) {
-
-      if(line.toLowerCase().startsWith("--${seperator}")) {
-        if(disposition != "" && filename == "") {
-          context.parsedBody[name] = segment.join("\n");
-          segment.clear();
-        } else if (disposition != "" && filename != "") {
-          context.parsedBody[name] = segment.join("\n").charCodes;
+  int _readMultiPartBody(String line, FukiyaContext context, int state) {
+    switch(state) {
+      case BOUNDARY:
+        context.parsedBody['boundary'] = context.request.headers.contentType.parameters['boundary'];
+        if(line.toLowerCase() == "--${context.parsedBody['boundary']}") {
+          state = HEADER_FIELD;
+        } else {
+          state = END;
         }
-        disposition = "";
-        name = "";
-        filename = "";
-        fileContentType = "";
-        fileContentTransfer = "";
-        insideSegment = true;
-        if(line.toLowerCase() == "--${seperator}--") {
-          break;
-        }
-      } else if(insideSegment && line.startsWith("Content-Disposition")) {
+        break;
+      case HEADER_FIELD:
         var dispRegex = new RegExp(r'Content-Disposition: ([\S]+); name="([\S]+)"');
         var dispFileRegex = new RegExp(r'Content-Disposition: ([\S]+); name="([\S]+)"; filename="([\w\.]+)"');
 
-        for(Match match in dispRegex.allMatches(line)) {
-          disposition = match.group(1);
-          name = match.group(2);
-        }
-
-        for(Match match in dispFileRegex.allMatches(line)) {
-          disposition = match.group(1);
-          name = match.group(2);
-          filename = match.group(3);
-        }
-      } else if(insideSegment && filename != "" && line != "") {
-        var type = new RegExp(r'Content-Type: ([\S]+)');
-
-        if(type.hasMatch(line)) {
-          fileContentType = type.firstMatch(line);
+        if(dispFileRegex.hasMatch(line)) {
+          context.parsedBody['currentName'] = dispRegex.firstMatch(line).group(2);
+          context.parsedBody[context.parsedBody['currentName']] = new HashMap();
+          context.parsedBody[context.parsedBody['currentName']]['filename'] = dispFileRegex.firstMatch(line).group(3);
+          context.parsedBody[context.parsedBody['currentName']]['data'] = new List();
+          state = PART_FILE_DATA;
+        } else if(dispRegex.hasMatch(line)) {
+           context.parsedBody['currentName'] = dispRegex.firstMatch(line).group(2);
+           context.parsedBody[context.parsedBody['currentName']] = "";
+           state = PART_FIELD_DATA;
         } else {
-          segment.add(line);
+          state = END;
         }
-      } else if(insideSegment && line != "") {
-        segment.add(line);
-      }
+        break;
+      case PART_FIELD_DATA:
+        if(line == "") {
+          break;
+        }
+        if(line.toLowerCase() == "--${context.parsedBody['boundary']}") {
+          state = HEADER_FIELD;
+          break;
+        }
+        if(line.toLowerCase() == "--${context.parsedBody['boundary']}--") {
+          state = END;
+          break;
+        }
+
+        context.parsedBody[context.parsedBody['currentName']] = context.parsedBody[context.parsedBody['currentName']].concat(line);
+        break;
+      case PART_FILE_DATA:
+        if(line == "") {
+          break;
+        }
+        var typeRegex = new RegExp(r'Content-Type: ([\S]+)');
+        if(typeRegex.hasMatch(line)) {
+          context.parsedBody[context.parsedBody['currentName']]['contentType'] = typeRegex.firstMatch(line).group(1);
+          break;
+        }
+        if(line.toLowerCase() == "--${context.parsedBody['boundary']}") {
+          state = HEADER_FIELD;
+          break;
+        }
+        if(line.toLowerCase() == "--${context.parsedBody['boundary']}--") {
+          state = END;
+          break;
+        }
+
+        context.parsedBody[context.parsedBody['currentName']]['data'].addAll(line.charCodes);
+        context.parsedBody[context.parsedBody['currentName']]['data'].addAll("\n".charCodes);
+
+        break;
+      case END:
+        break;
     }
+    return state;
   }
 
   void _readUrlEncodedBody(String content, FukiyaContext context) {

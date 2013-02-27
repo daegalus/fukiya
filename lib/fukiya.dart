@@ -2,12 +2,15 @@ library fukiya;
 import 'dart:io';
 import 'dart:collection';
 import 'dart:async';
+import 'dart:json' as JSON;
 part 'fukiya_request_handler.dart';
 part 'fukiya_router.dart';
 part 'fukiya_context.dart';
 part 'fukiya_middle.dart';
 part 'middleware/fukiya_middleware.dart';
 part 'middleware/fukiya_formparser.dart';
+part 'middleware/fukiya_jsonparser.dart';
+part 'middleware/fukiya_fileparser.dart';
 part 'middleware/fukiya_closer.dart';
 
 class Fukiya {

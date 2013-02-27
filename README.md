@@ -16,12 +16,18 @@ void main() {
     ..get('/:userid', getDynamicHandler)
     ..staticFiles('./test/static')
     ..use(new FukiyaFormParser())
+    ..use(new FukiyaJsonParser())
     ..listen('127.0.0.1', 3333);
 }
 ```
 
 Changes
 =======
+v0.0.5
+- Changed form parser to a State Machine. Works better, and more efficient. Still some edge cases that I am not covering on purpose.
+- Added JSON and File Parsers.
+- Fixed some bugs and other stuff.
+
 v0.0.4
 - Middleware support.
 - Form Parsing. UrlEncoded and MultiPart (MultiPart is very poorly implemented, and hacky, expect bugs.)
@@ -40,7 +46,7 @@ v0.0.1
 
 TODOs
 =====
-2. JSON Handling.
+N/A atm
 
 Known Bugs
 ==========

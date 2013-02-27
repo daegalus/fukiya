@@ -10,6 +10,7 @@ void main() {
     ..get('/:userid', getDynamicHandler)
     ..staticFiles('./test/static')
     ..use(new FukiyaFormParser())
+    ..use(new FukiyaJsonParser())
     ..listen('127.0.0.1', 3333);
 }
 
