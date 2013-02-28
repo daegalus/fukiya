@@ -16,7 +16,7 @@ class FukiyaContext {
   }
 
   void send(String output) {
-    response.add(output.charCodes);
+    response.addString(output);
     response.close();
   }
 }
