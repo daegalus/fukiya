@@ -5,4 +5,4 @@ description: A simple framework to improve and simplify the creation of server-s
 homepage: https://github.com/Daegalus/fukiya
 dependencies:
   unittest: any
-  logging: any
+  logging: 0.4.0
