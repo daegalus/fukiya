@@ -13,6 +13,9 @@ void main() {
     ..put('/', putHandler)
     ..delete('/', deleteHandler)
     ..post('/', postHandler)
+    ..get('/testing', (FukiyaContext context) {
+      context.send("This is testing.");
+    })
     ..get('/:userid', getDynamicHandler)
     ..staticFiles('./test/static')
     ..use(new FukiyaFormParser())
@@ -23,6 +26,10 @@ void main() {
 
 Changes
 =======
+v0.0.6
+- Added prioritization logic to handle paths similar to each other, but used differenly. Like '/testing' vs '/:someVar' if '/testing' is hit, it should always hit '/testing' and never hit '/:someVar' since it matches also.
+- Fixed a few other bugs and languages changes.
+
 v0.0.5
 - Changed form parser to a State Machine. Works better, and more efficient. Still some edge cases that I am not covering on purpose.
 - Added JSON and File Parsers.
