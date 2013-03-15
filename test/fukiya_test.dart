@@ -7,6 +7,9 @@ void main() {
     ..put('/', putHandler)
     ..delete('/', deleteHandler)
     ..post('/', postHandler)
+    ..get('/testing', (FukiyaContext context) {
+      context.send("This is testing.");
+    })
     ..get('/:userid', getDynamicHandler)
     ..staticFiles('./test/static')
     ..use(new FukiyaFormParser())

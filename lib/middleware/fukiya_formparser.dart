@@ -117,8 +117,8 @@ class FukiyaFormParser implements FukiyaMiddleware {
           break;
         }
 
-        context.parsedBody[context.parsedBody['currentName']]['data'].addAll(line.charCodes);
-        context.parsedBody[context.parsedBody['currentName']]['data'].addAll("\n".charCodes);
+        context.parsedBody[context.parsedBody['currentName']]['data'].addAll(line.codeUnits);
+        context.parsedBody[context.parsedBody['currentName']]['data'].addAll("\n".codeUnits);
 
         break;
       case END:

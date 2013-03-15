@@ -20,6 +20,8 @@ class FukiyaRouter {
       return route.method == context.request.method && route.matches(context);
     }).toList();
 
+    FukiyaRequestHandler finalRoute = prioritizeRouter(context, filteredRoutes);
+
     var static = false;
     if (useStaticFileHandling && context.request.method == "GET") {
       var file = new File(staticFilePath.concat(context.request.uri.path));
@@ -30,12 +32,48 @@ class FukiyaRouter {
             context.response.close();
           }, onError:(error) => print(error));
 
-        } else if (!filteredRoutes.isEmpty) {
-          filteredRoutes.single.handle(context);
+        } else if (finalRoute != null) {
+          finalRoute.handle(context);
+        } else {
+          context.response.statusCode = 404;
+          context.response.close();
         }
       });
     } else {
-      filteredRoutes.single.handle(context);
+      finalRoute.handle(context);
+    }
+  }
+
+  FukiyaRequestHandler prioritizeRouter(FukiyaContext context, List<FukiyaRequestHandler> routes) {
+    Map<FukiyaRequestHandler, int> mapPriorities = new HashMap<FukiyaRequestHandler, int>();
+
+    for(FukiyaRequestHandler handler in routes) {
+      List<String> pathSegments = handler.path.split('/');
+      List<String> reqPathSegments = context.request.uri.path.split('/');
+
+      for(int i = 0; i<pathSegments.length; i++) {
+        String pathSegment = pathSegments[i];
+        String reqPathSegment = reqPathSegments[i];
+
+        mapPriorities.putIfAbsent(handler, () => 0);
+
+        if(pathSegment == reqPathSegment) {
+          mapPriorities[handler] += 1;
+        } else if(pathSegment.startsWith(':')) {
+          mapPriorities[handler] += 1;
+        }
+      }
+    }
+
+    var values = mapPriorities.values.toList();
+    values.sort((a,b) {
+       return a - b;
+    });
+
+    for(FukiyaRequestHandler handler in mapPriorities.keys) {
+      if(mapPriorities[handler] == values[0]) {
+        return handler;
+      }
     }
   }
 }
