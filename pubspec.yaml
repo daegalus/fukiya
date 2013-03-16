@@ -6,4 +6,4 @@ homepage: https://github.com/Daegalus/fukiya
 dependencies:
   unittest: '0.4.1'
   logging: '0.4.1'
-  meta: '0.4.1'
+  meta: '0.4.1+1'
