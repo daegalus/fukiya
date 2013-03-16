@@ -4,5 +4,6 @@ author: Yulian Kuncheff <yulian@kuncheff.com>
 description: A simple framework to improve and simplify the creation of server-side dart applications.
 homepage: https://github.com/Daegalus/fukiya
 dependencies:
-  unittest: any
-  logging: 0.4.0
+  unittest: '0.4.1'
+  logging: '0.4.1'
+  meta: '0.4.1'
