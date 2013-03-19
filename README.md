@@ -26,6 +26,9 @@ void main() {
 
 Changes
 =======
+v0.0.7
+- Fixing problems with Pub versioning.
+
 v0.0.6
 - Added prioritization logic to handle paths similar to each other, but used differenly. Like '/testing' vs '/:someVar' if '/testing' is hit, it should always hit '/testing' and never hit '/:someVar' since it matches also.
 - Fixed a few other bugs and languages changes.
