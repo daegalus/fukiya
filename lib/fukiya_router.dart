@@ -24,11 +24,12 @@ class FukiyaRouter {
 
     var static = false;
     if (useStaticFileHandling && context.request.method == "GET") {
-      var file = new File(staticFilePath.concat(context.request.uri.path));
+      var file = new File(staticFilePath + context.request.uri.path);
       file.exists().then((exists) {
         if (exists) {
           file.readAsBytes().then((value) {
-            context.response.add(value.toList());
+            context.response.writeBytes(value.toList());
+            context.response.done.catchError((e) => print("File Response error: ${e}"));
             context.response.close();
           }, onError:(error) => print(error));
 

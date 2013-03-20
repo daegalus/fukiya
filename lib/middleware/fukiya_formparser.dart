@@ -8,11 +8,11 @@ class FukiyaFormParser implements FukiyaMiddleware {
 
   bool process(FukiyaContext context, Completer completer) {
     var contentType = context.request.headers.contentType;
-    if((context.request.method == "POST" || context.request.method == "PUT") &&
+    if(contentType != null && (context.request.method == "POST" || context.request.method == "PUT") &&
        (contentType.primaryType == "multipart" && contentType.subType == "form-data")) {
       _parseMultiPartBody(context, completer);
       return true;
-    } else if((context.request.method == "POST" || context.request.method == "PUT") &&
+    } else if(contentType != null  && (context.request.method == "POST" || context.request.method == "PUT") &&
               (contentType.primaryType == "application" && contentType.subType == "x-www-form-urlencoded")) {
       _parseUrlEncodedBody(context, completer);
       return true;

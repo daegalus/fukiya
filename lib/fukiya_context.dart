@@ -16,7 +16,8 @@ class FukiyaContext {
   }
 
   void send(String output) {
-    response.addString(output);
+    response.write(output);
+    response.done.catchError((e) => print("Error sending response ${e}"));
     response.close();
   }
 }

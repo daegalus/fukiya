@@ -8,7 +8,7 @@ class FukiyaJsonParser implements FukiyaMiddleware {
 
   bool process(FukiyaContext context, Completer completer) {
     var contentType = context.request.headers.contentType;
-    if(contentType.primaryType == "application" && contentType.subType == "json") {
+    if(contentType != null && contentType.primaryType == "application" && contentType.subType == "json") {
       _parseJsonBody(context, completer);
       return true;
     }

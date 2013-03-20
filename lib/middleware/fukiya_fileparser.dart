@@ -8,7 +8,7 @@ class FukiyaFileParser implements FukiyaMiddleware {
 
   bool process(FukiyaContext context, Completer completer) {
     var contentType = context.request.headers.contentType;
-    if((contentType.primaryType != "text" && contentType.subType != "plain") ||
+    if(contentType != null && (contentType.primaryType != "text" && contentType.subType != "plain") ||
        (contentType.primaryType != "application" && (contentType.subType != "json" || contentType.subType != "x-www-form-urlencoded")) ||
        (contentType.primaryType != "multipart" && contentType.subType != "form-data")) {
       _parseFileBody(context, completer);
@@ -24,7 +24,7 @@ class FukiyaFileParser implements FukiyaMiddleware {
                    },
                    onError: (e) => print("[Fukiya][FormParser]${e}"),
                    onDone: () {
-                     context.parsedBody['contentType'] = context.request.headers.contentType.primaryType.concat("/").concat(context.request.headers.contentType.subType);
+                     context.parsedBody['contentType'] = context.request.headers.contentType.primaryType + "/" + context.request.headers.contentType.subType;
                      context.parsedBody['data'] = lines;
                      completer.complete(context);
                    });
