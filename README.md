@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/daegalus/fukiya/status.png)](https://drone.io/daegalus/fukiya/latest)
+[![Build Status](https://drone.io/github.com/Daegalus/fukiya/status.png)](https://drone.io/github.com/Daegalus/fukiya/latest)
 
 Fukiya
 ======
