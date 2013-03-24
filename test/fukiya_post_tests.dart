@@ -2,6 +2,7 @@ library fukiyPostTests;
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:async';
+import 'dart:crypto';
 import 'package:unittest/unittest.dart';
 
 class FukiyaPostTests {
@@ -82,7 +83,58 @@ class FukiyaPostTests {
       });
     });
 
-    test('[POST] Simple POST Request with Post Data MultiPart', () {
+    test('[POST] Simple POST Request with Post Base64 Data MultiPart', () {
+      String finalString = '';
+      var atest = expectAsync0(() {
+        client.post('127.0.0.1', 3333, '/postData').then((HttpClientRequest request) {
+          request.headers.contentType = new ContentType('multipart', 'form-data', charset: 'utf-8', parameters: {'boundary':'AaB03x'});
+
+          String postData =  '--AaB03x\n'
+          'Content-Disposition: form-data; name="submit-name"\n'
+          '\n'
+          'Larry\n'
+          '--AaB03x\n'
+          'Content-Disposition: form-data; name="file"; filename="image.jpg"\n'
+          'Content-Type: image/jpeg\n'
+          'Content-Transfer-Encoding: base64\n'
+          '\n';
+          String endPostData = '\n--AaB03x--';
+
+          File file = new File('./test/image.jpg');
+          List<int> fileData = file.readAsBytesSync();
+
+          List<int> sendData = new List<int>();
+          sendData..addAll(postData.codeUnits)..addAll(CryptoUtils.bytesToBase64(fileData).codeUnits)..addAll(endPostData.codeUnits);
+
+          request.contentLength = sendData.length;
+          request.writeBytes(sendData);
+          return request.close();
+
+        }).then((HttpClientResponse response) {
+          response.transform(new StringDecoder())
+          .transform(new LineTransformer())
+          .listen((String result) {
+            finalString += result;
+          },
+          onDone: () {
+            expect(finalString, equals('Form File Upload POST OK'));
+
+            File sentFile = new File('./test/image.jpg');
+            List<int> sentFileData = sentFile.readAsBytesSync();
+
+            File receivedFile = new File('./test/r-image.jpg');
+            List<int> receivedFileData = receivedFile.readAsBytesSync();
+
+            for(int i = 0; i < sentFileData.length; i++) {
+              expect(sentFileData[i], equals(receivedFileData[i]));
+            }
+          });
+        });
+      });
+      atest();
+    });
+
+    /*test('[POST] Simple POST Request with Post Binary Data MultiPart', () {
       String finalString = '';
       var atest = expectAsync0(() {
         client.post('127.0.0.1', 3333, '/postData').then((HttpClientRequest request) {
@@ -131,7 +183,7 @@ class FukiyaPostTests {
         });
       });
       atest();
-    });
+    });*/
     return completer.future;
   }
 }

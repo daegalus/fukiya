@@ -129,7 +129,7 @@ class FukiyaFormParser implements FukiyaMiddleware {
           context.parsedBody[context.parsedBody['currentName']]['data'].addAll("\n".codeUnits);
 
         if(context.parsedBody[context.parsedBody['currentName']]['transferEncoding'] == "base64")
-          context.parsedBody[context.parsedBody['currentName']]['data'] = b64d.decode(context.parsedBody[context.parsedBody['currentName']]['data']);
+          context.parsedBody[context.parsedBody['currentName']]['data'] = b64d.decode(new String.fromCharCodes(context.parsedBody[context.parsedBody['currentName']]['data']));
 
         break;
       case END:

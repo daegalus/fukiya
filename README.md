@@ -1,3 +1,5 @@
+[![Build Status](https://drone.io/daegalus/fukiya/status.png)](https://drone.io/daegalus/fukiya/latest)
+
 Fukiya
 ======
 Simple framework for making dart server applications easier to write. Long way to go, this is very simple.
@@ -26,6 +28,10 @@ void main() {
 
 Changes
 =======
+v0.0.8
+- Added unit testing.
+- Form parser works for everything except Content-Transfer-Encoding: binary. If you want to use it to upload files. Base64 encode them first.
+
 v0.0.7
 - Fixing problems with Pub versioning.
 
@@ -56,11 +62,11 @@ v0.0.1
 
 TODOs
 =====
-N/A atm
+Rewrite form parser as a byte parser from the current string parser.
 
 Known Bugs
 ==========
-N/A
+Form Parser doesn't handle raw binary data in a multipart form.
 
 License
 =======

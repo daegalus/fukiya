@@ -73,5 +73,9 @@ class Fukiya {
   HttpServer httpServer() {
     return _server;
   }
+
+  void stop() {
+    _server.close();
+  }
 }
 

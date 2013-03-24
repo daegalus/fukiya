@@ -33,7 +33,7 @@ void main() {
   FukiyaGetTests.runTests().then((bool status) => status);
   FukiyaPostTests.runTests().then((bool status) => status);
   FukiyaPutTests.runTests().then((bool status) => status);
-  FukiyaDeleteTests.runTests().then((bool status) => app.httpServer().close());
+  FukiyaDeleteTests.runTests().then((bool status) => app.stop());
 
 }
 
