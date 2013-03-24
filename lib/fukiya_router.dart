@@ -17,7 +17,7 @@ class FukiyaRouter {
 
   void route(FukiyaContext context) {
     List<FukiyaRequestHandler> filteredRoutes = _routes.where((FukiyaRequestHandler route) {
-      return route.method == context.request.method && route.matches(context);
+      return (route.method == context.request.method) && route.matches(context);
     }).toList();
 
     FukiyaRequestHandler finalRoute = prioritizeRouter(context, filteredRoutes);
@@ -61,14 +61,14 @@ class FukiyaRouter {
         if(pathSegment == reqPathSegment) {
           mapPriorities[handler] += 1;
         } else if(pathSegment.startsWith(':')) {
-          mapPriorities[handler] += 1;
+          mapPriorities[handler] += 0.8; //for cases where /testing/:somevalue and /:somevalue/:anothervalue happens
         }
       }
     }
 
     var values = mapPriorities.values.toList();
     values.sort((a,b) {
-       return a - b;
+       return b-a;
     });
 
     for(FukiyaRequestHandler handler in mapPriorities.keys) {

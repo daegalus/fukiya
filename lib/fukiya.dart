@@ -3,6 +3,8 @@ import 'dart:io';
 import 'dart:collection';
 import 'dart:async';
 import 'dart:json' as JSON;
+import 'dart:crypto';
+import 'dart:typeddata';
 part 'fukiya_request_handler.dart';
 part 'fukiya_router.dart';
 part 'fukiya_context.dart';
@@ -12,6 +14,7 @@ part 'middleware/fukiya_formparser.dart';
 part 'middleware/fukiya_jsonparser.dart';
 part 'middleware/fukiya_fileparser.dart';
 part 'middleware/fukiya_closer.dart';
+part 'helper/base64_decoder.dart';
 
 class Fukiya {
   HttpServer _server;

@@ -1,20 +1,40 @@
-import '../lib/fukiya.dart';
+import 'package:fukiya/fukiya.dart';
+import 'fukiya_get_tests.dart';
+import 'fukiya_delete_tests.dart';
+import 'fukiya_post_tests.dart';
+import 'fukiya_put_tests.dart';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:async';
+import 'package:unittest/unittest.dart';
 
 void main() {
-  new Fukiya()
-    ..get('/', getHandler)
-    ..put('/', putHandler)
-    ..delete('/', deleteHandler)
-    ..post('/', postHandler)
-    ..get('/testing', (FukiyaContext context) {
-      context.send("This is testing.");
-    })
-    ..get('/:userid', getDynamicHandler)
-    ..staticFiles('./test/static')
-    ..use(new FukiyaFormParser())
-    ..use(new FukiyaJsonParser())
-    ..listen('127.0.0.1', 3333);
+  Fukiya app = new Fukiya();
+  app..get('/', getHandler)
+     ..put('/', putHandler)
+     ..delete('/', deleteHandler)
+     ..delete('/testing', (FukiyaContext context) {
+       context.send("DELETE OK - testing");
+     })
+     ..post('/', postHandler)
+     ..get('/testing', (FukiyaContext context) {
+       context.send("GET OK - testing");
+     })
+     ..get('/:userid', getDynamicHandler)
+     ..put('/:userid', putDynamicHandler)
+     ..delete('/:userid', deleteDynamicHandler)
+     ..post('/:userid', postDynamicHandler)
+     ..post('/postData', postFileDataHandler)
+     ..staticFiles('./test/static')
+     ..use(new FukiyaFormParser())
+     ..use(new FukiyaJsonParser())
+     ..listen('127.0.0.1', 3333);
+
+  FukiyaGetTests.runTests().then((bool status) => status);
+  FukiyaPostTests.runTests().then((bool status) => status);
+  FukiyaPutTests.runTests().then((bool status) => status);
+  FukiyaDeleteTests.runTests().then((bool status) => app.httpServer().close());
+
 }
 
 void getHandler(FukiyaContext context) {
@@ -22,7 +42,7 @@ void getHandler(FukiyaContext context) {
 }
 
 void putHandler(FukiyaContext context) {
-  context.send("PUT OK");
+  context.send("PUT OK ${context.parsedBody['username']} - ${context.parsedBody['password']}");
 }
 
 void deleteHandler(FukiyaContext context) {
@@ -30,10 +50,30 @@ void deleteHandler(FukiyaContext context) {
 }
 
 void postHandler(FukiyaContext context) {
-  print(context.parsedBody);
-  context.send("POST OK");
+  context.send("POST OK ${context.parsedBody['username']} - ${context.parsedBody['password']}");
 }
 
 void getDynamicHandler(FukiyaContext context) {
-  context.send("Dynamic OK ${context.params['userid']}");
+  context.send("Dynamic GET OK ${context.params['userid']}");
+}
+
+void putDynamicHandler(FukiyaContext context) {
+  context.send("Dynamic PUT OK ${context.params['userid']} - ${context.parsedBody['username']}");
+}
+
+void deleteDynamicHandler(FukiyaContext context) {
+  context.send("Dynamic DELETE OK ${context.params['userid']}");
+}
+
+void postDynamicHandler(FukiyaContext context) {
+  context.send("Dynamic POST OK ${context.params['userid']} - ${context.parsedBody['username']}");
+}
+
+void postFileDataHandler(FukiyaContext context) {
+  List<int> fileData = context.parsedBody['file']['data'];
+  String filename = context.parsedBody['file']['filename'];
+
+  File file = new File("./test/r-${filename}");
+  file.writeAsBytesSync(fileData);
+  context.send("Form File Upload POST OK");
 }

@@ -4,5 +4,9 @@ tests/packages
 .project
 packages/
 packages
-
+*.iml
 lib/ABOutput.txt
+.swp
+.idea/
+
+test/r-image.jpg

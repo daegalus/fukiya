@@ -2,6 +2,8 @@ part of fukiya;
 
 class FukiyaFormParser implements FukiyaMiddleware {
 
+  Base64Decoder b64d = new Base64Decoder();
+
   String getName() {
     return "FukiyaFormParser";
   }
@@ -104,8 +106,13 @@ class FukiyaFormParser implements FukiyaMiddleware {
           break;
         }
         var typeRegex = new RegExp(r'Content-Type: ([\S]+)');
+        var transferRegex = new RegExp(r'Content-Transfer-Encoding: ([\S]+)');
         if(typeRegex.hasMatch(line)) {
           context.parsedBody[context.parsedBody['currentName']]['contentType'] = typeRegex.firstMatch(line).group(1);
+          break;
+        }
+        if(transferRegex.hasMatch(line)) {
+          context.parsedBody[context.parsedBody['currentName']]['transferEncoding'] = transferRegex.firstMatch(line).group(1);
           break;
         }
         if(line.toLowerCase() == "--${context.parsedBody['boundary']}") {
@@ -118,7 +125,11 @@ class FukiyaFormParser implements FukiyaMiddleware {
         }
 
         context.parsedBody[context.parsedBody['currentName']]['data'].addAll(line.codeUnits);
-        context.parsedBody[context.parsedBody['currentName']]['data'].addAll("\n".codeUnits);
+        if(context.parsedBody[context.parsedBody['currentName']]['contentType'] == "text/plain")
+          context.parsedBody[context.parsedBody['currentName']]['data'].addAll("\n".codeUnits);
+
+        if(context.parsedBody[context.parsedBody['currentName']]['transferEncoding'] == "base64")
+          context.parsedBody[context.parsedBody['currentName']]['data'] = b64d.decode(context.parsedBody[context.parsedBody['currentName']]['data']);
 
         break;
       case END:
