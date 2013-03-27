@@ -28,6 +28,9 @@ void main() {
 
 Changes
 =======
+v0.0.9
+- Extracted form parser into seperate library called Formler. Works much better now, and in turn form parsing is in a better state in Fukiya.
+
 v0.0.8
 - Added unit testing.
 - Form parser works for everything except Content-Transfer-Encoding: binary. If you want to use it to upload files. Base64 encode them first.
@@ -62,11 +65,11 @@ v0.0.1
 
 TODOs
 =====
-Rewrite form parser as a byte parser from the current string parser.
+N/A
 
 Known Bugs
 ==========
-Form Parser doesn't handle raw binary data in a multipart form.
+N/A
 
 License
 =======
