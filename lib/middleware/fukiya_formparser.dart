@@ -24,128 +24,30 @@ class FukiyaFormParser implements FukiyaMiddleware {
 
   void _parseMultiPartBody(FukiyaContext context, Completer completer) {
     var state = 0;
-    List<String> lines = new List<String>();
-    context.request.transform(new StringDecoder())
-                   .transform(new LineTransformer())
-                   .listen((String line) {
-                     state = _readMultiPartBody(line, context, state);
+    List<int> data = new List<int>();
+    Formler formler;
+    context.request.listen((List<int> bits) {
+                     data.addAll(bits);
                    },
                    onError: (e) => print("[Fukiya][FormParser]${e}"),
                    onDone: () {
-                     context.parsedBody.remove('currentName');
-                     context.parsedBody.remove('boundary');
+                     formler = new Formler(data, context.request.headers.contentType.parameters['boundary']);
+                     context.parsedBody = formler.parse();
                      completer.complete(context);
                    });
   }
 
   void _parseUrlEncodedBody(FukiyaContext context, Completer completer) {
-    List<String> lines = new List<String>();
-    context.request.transform(new StringDecoder())
-                   .transform(new LineTransformer())
-                   .listen((String line) {
-                     lines.add(line);
+    List<int> data = new List<int>();
+    context.request.listen((List<int> bits) {
+                     data.addAll(bits);
                    },
                    onError: (e) => print("[Fukiya][FormParser]${e}"),
                    onDone: () {
-                     _readUrlEncodedBody(lines.first, context);
+                     String body = new String.fromCharCodes(data);
+                     context.parsedBody = Formler.parseUrlEncoded(body);
                      completer.complete(context);
                    });
   }
-
-  const BOUNDARY = 0;
-  const HEADER_FIELD = 1;
-  const PART_FIELD_DATA = 2;
-  const PART_FILE_DATA = 3;
-  const END = 4;
-
-  int _readMultiPartBody(String line, FukiyaContext context, int state) {
-    switch(state) {
-      case BOUNDARY:
-        context.parsedBody['boundary'] = context.request.headers.contentType.parameters['boundary'];
-        if(line.toLowerCase() == "--${context.parsedBody['boundary']}") {
-          state = HEADER_FIELD;
-        } else {
-          state = END;
-        }
-        break;
-      case HEADER_FIELD:
-        var dispRegex = new RegExp(r'Content-Disposition: ([\S]+); name="([\S]+)"');
-        var dispFileRegex = new RegExp(r'Content-Disposition: ([\S]+); name="([\S]+)"; filename="([\w\.]+)"');
-
-        if(dispFileRegex.hasMatch(line)) {
-          context.parsedBody['currentName'] = dispRegex.firstMatch(line).group(2);
-          context.parsedBody[context.parsedBody['currentName']] = new HashMap();
-          context.parsedBody[context.parsedBody['currentName']]['filename'] = dispFileRegex.firstMatch(line).group(3);
-          context.parsedBody[context.parsedBody['currentName']]['data'] = new List();
-          state = PART_FILE_DATA;
-        } else if(dispRegex.hasMatch(line)) {
-           context.parsedBody['currentName'] = dispRegex.firstMatch(line).group(2);
-           context.parsedBody[context.parsedBody['currentName']] = "";
-           state = PART_FIELD_DATA;
-        } else {
-          state = END;
-        }
-        break;
-      case PART_FIELD_DATA:
-        if(line == "") {
-          break;
-        }
-        if(line.toLowerCase() == "--${context.parsedBody['boundary']}") {
-          state = HEADER_FIELD;
-          break;
-        }
-        if(line.toLowerCase() == "--${context.parsedBody['boundary']}--") {
-          state = END;
-          break;
-        }
-
-        context.parsedBody[context.parsedBody['currentName']] = context.parsedBody[context.parsedBody['currentName']].concat(line);
-        break;
-      case PART_FILE_DATA:
-        if(line == "") {
-          break;
-        }
-        var typeRegex = new RegExp(r'Content-Type: ([\S]+)');
-        var transferRegex = new RegExp(r'Content-Transfer-Encoding: ([\S]+)');
-        if(typeRegex.hasMatch(line)) {
-          context.parsedBody[context.parsedBody['currentName']]['contentType'] = typeRegex.firstMatch(line).group(1);
-          break;
-        }
-        if(transferRegex.hasMatch(line)) {
-          context.parsedBody[context.parsedBody['currentName']]['transferEncoding'] = transferRegex.firstMatch(line).group(1);
-          break;
-        }
-        if(line.toLowerCase() == "--${context.parsedBody['boundary']}") {
-          state = HEADER_FIELD;
-          break;
-        }
-        if(line.toLowerCase() == "--${context.parsedBody['boundary']}--") {
-          state = END;
-          break;
-        }
-
-        context.parsedBody[context.parsedBody['currentName']]['data'].addAll(line.codeUnits);
-        if(context.parsedBody[context.parsedBody['currentName']]['contentType'] == "text/plain")
-          context.parsedBody[context.parsedBody['currentName']]['data'].addAll("\n".codeUnits);
-
-        if(context.parsedBody[context.parsedBody['currentName']]['transferEncoding'] == "base64")
-          context.parsedBody[context.parsedBody['currentName']]['data'] = b64d.decode(new String.fromCharCodes(context.parsedBody[context.parsedBody['currentName']]['data']));
-
-        break;
-      case END:
-        break;
-    }
-    return state;
-  }
-
-  void _readUrlEncodedBody(String content, FukiyaContext context) {
-    List<String> segments = content.split("&");
-
-    for(String segment in segments) {
-      List<String> pair = segment.split('=');
-      context.parsedBody[pair[0]] = pair[1];
-    }
-  }
-
 }
 

@@ -89,16 +89,16 @@ class FukiyaPostTests {
         client.post('127.0.0.1', 3333, '/postData').then((HttpClientRequest request) {
           request.headers.contentType = new ContentType('multipart', 'form-data', charset: 'utf-8', parameters: {'boundary':'AaB03x'});
 
-          String postData =  '--AaB03x\n'
-          'Content-Disposition: form-data; name="submit-name"\n'
-          '\n'
-          'Larry\n'
-          '--AaB03x\n'
-          'Content-Disposition: form-data; name="file"; filename="image.jpg"\n'
-          'Content-Type: image/jpeg\n'
-          'Content-Transfer-Encoding: base64\n'
-          '\n';
-          String endPostData = '\n--AaB03x--';
+          String postData =  '--aab03x\r\n'
+          'Content-Disposition: form-data; name="submit-name"\r\n'
+          '\r\n'
+          'Larry\r\n'
+          '--aab03x\r\n'
+          'Content-Disposition: form-data; name="file"; filename="image.jpg"\r\n'
+          'Content-Type: image/jpeg\r\n'
+          'Content-Transfer-Encoding: base64\r\n'
+          '\r\n';
+          String endPostData = '\r\n--aab03x--';
 
           File file = new File('./test/image.jpg');
           List<int> fileData = file.readAsBytesSync();
@@ -134,28 +134,29 @@ class FukiyaPostTests {
       atest();
     });
 
-    /*test('[POST] Simple POST Request with Post Binary Data MultiPart', () {
+    test('[POST] Simple POST Request with Post Binary Data MultiPart', () {
       String finalString = '';
       var atest = expectAsync0(() {
         client.post('127.0.0.1', 3333, '/postData').then((HttpClientRequest request) {
           request.headers.contentType = new ContentType('multipart', 'form-data', charset: 'utf-8', parameters: {'boundary':'AaB03x'});
 
-          String postData =  '--AaB03x\n'
-                             'Content-Disposition: form-data; name="submit-name"\n'
-                             '\n'
-                             'Larry\n'
-                             '--AaB03x\n'
-                             'Content-Disposition: form-data; name="file"; filename="image.jpg"\n'
-                             'Content-Type: image/jpeg\n'
-                             'Content-Transfer-Encoding: binary\n'
-                             '\n';
-          String endPostData = '\n--AaB03x--';
+          String postData =  '--AaB03x\r\n'
+                             'Content-Disposition: form-data; name="submit-name"\r\n'
+                             '\r\n'
+                             'Larry\r\n'
+                             '--AaB03x\r\n'
+                             'Content-Disposition: form-data; name="file"; filename="image.jpg"\r\n'
+                             'Content-Type: image/jpeg\r\n'
+                             'Content-Transfer-Encoding: binary\r\n'
+                             '\r\n';
+          String endPostData = '\r\n--AaB03x--';
 
           File file = new File('./test/image.jpg');
           List<int> fileData = file.readAsBytesSync();
 
           List<int> sendData = new List<int>();
           sendData..addAll(postData.codeUnits)..addAll(fileData)..addAll(endPostData.codeUnits);
+
 
           request.contentLength = sendData.length;
           request.writeBytes(sendData);
@@ -183,7 +184,7 @@ class FukiyaPostTests {
         });
       });
       atest();
-    });*/
+    });
     return completer.future;
   }
 }
