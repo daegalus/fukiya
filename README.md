@@ -28,6 +28,9 @@ void main() {
 
 Changes
 =======
+v0.0.10
+- Fixed a missing null check that causes problems if you aren't using static file handler.
+
 v0.0.9
 - Extracted form parser into seperate library called Formler. Works much better now, and in turn form parsing is in a better state in Fukiya.
 

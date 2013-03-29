@@ -22,6 +22,11 @@ class FukiyaRouter {
 
     FukiyaRequestHandler finalRoute = prioritizeRouter(context, filteredRoutes);
 
+    if(finalRoute == null) {
+      context.response.statusCode = 404;
+      context.response.close();
+    }
+
     var static = false;
     if (useStaticFileHandling && context.request.method == "GET") {
       var file = new File(staticFilePath + context.request.uri.path);
