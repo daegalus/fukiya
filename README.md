@@ -28,6 +28,9 @@ void main() {
 
 Changes
 =======
+v0.0.11
+- Stupid mistake fix.
+
 v0.0.10
 - Fixed a missing null check that causes problems if you aren't using static file handler.
 
