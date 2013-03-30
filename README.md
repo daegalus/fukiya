@@ -28,6 +28,9 @@ void main() {
 
 Changes
 =======
+v0.0.12
+- Fixing issue with Ints and Doubles during checked mode in prioritizer.
+
 v0.0.11
 - Stupid mistake fix.
 
