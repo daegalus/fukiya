@@ -1,4 +1,5 @@
-part of fukiya;
+library Base64Decoder;
+import 'dart:typeddata';
 
 class Base64Decoder {
 
