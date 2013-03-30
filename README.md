@@ -28,6 +28,9 @@ void main() {
 
 Changes
 =======
+v0.0.13
+- Bug fix for improper part/import behavior between Formler and Fukiya. Should prevent this from happening to others.
+
 v0.0.12
 - Fixing issue with Ints and Doubles during checked mode in prioritizer.
 
