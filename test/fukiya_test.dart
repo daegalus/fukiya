@@ -21,6 +21,9 @@ void main() {
        context.send("GET OK - testing");
      })
      ..get('/:userid', getDynamicHandler)
+     ..get('/:module/:controller/:action', (FukiyaContext context) {
+       context.send("Test");
+     })
      ..put('/:userid', putDynamicHandler)
      ..delete('/:userid', deleteDynamicHandler)
      ..post('/:userid', postDynamicHandler)

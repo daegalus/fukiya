@@ -49,7 +49,7 @@ class FukiyaRouter {
   }
 
   FukiyaRequestHandler prioritizeRouter(FukiyaContext context, List<FukiyaRequestHandler> routes) {
-    Map<FukiyaRequestHandler, int> mapPriorities = new HashMap<FukiyaRequestHandler, int>();
+    Map<FukiyaRequestHandler, num> mapPriorities = new HashMap<FukiyaRequestHandler, num>();
 
     for(FukiyaRequestHandler handler in routes) {
       List<String> pathSegments = handler.path.split('/');

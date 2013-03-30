@@ -65,12 +65,32 @@ class FukiyaGetTests {
             },
             onDone: () {
               expect(finalString, equals("Dynamic GET OK 3727328732"));
-              completer.complete(true);
             });
           });
         });
         atest();
       });
+    });
+
+    test('Simple GET Request w/ Multiple value matchers', () {
+      String finalString = "";
+      var atest = expectAsync0(() {
+        client.get("127.0.0.1", 3333, "/test/test2/test3").then((HttpClientRequest request) {
+          return request.close();
+
+        }).then((HttpClientResponse response) {
+          response.transform(new StringDecoder())
+          .transform(new LineTransformer())
+          .listen((String result) {
+            finalString += result;
+          },
+          onDone: () {
+            expect(finalString, equals("Test"));
+            completer.complete(true);
+          });
+        });
+      });
+      atest();
     });
     return completer.future;
   }
