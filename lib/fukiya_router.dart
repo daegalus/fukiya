@@ -36,14 +36,14 @@ class FukiyaRouter {
         } else if (finalRoute != null) {
           finalRoute.handle(context);
         } else {
-          context.response.statusCode = 404;
+          context.response.statusCode = HttpStatus.NOT_FOUND;
           context.response.close();
         }
       });
     } else if (finalRoute != null) {
       finalRoute.handle(context);
     } else {
-      context.response.statusCode = 404;
+      context.response.statusCode = HttpStatus.NOT_FOUND;
       context.response.close();
     }
   }

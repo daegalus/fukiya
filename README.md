@@ -28,6 +28,10 @@ void main() {
 
 Changes
 =======
+v0.0.14
+- Added a redirect() function to faciliate easier 302 redirects.
+- Replaced a few hardcoded HTTP Statuses to use the HttpStatus constants/enum.
+
 v0.0.13
 - Bug fix for improper part/import behavior between Formler and Fukiya. Should prevent this from happening to others.
 

@@ -20,4 +20,10 @@ class FukiyaContext {
     response.done.catchError((e) => print("Error sending response ${e}"));
     response.close();
   }
+
+  void redirect(String url) {
+    response.statusCode = HttpStatus.MOVED_TEMPORARILY;
+    response.headers.add('Location',url);
+    response.close();
+  }
 }
