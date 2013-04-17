@@ -8,5 +8,5 @@ packages
 lib/ABOutput.txt
 .swp
 .idea/
-
+out/
 test/r-image.jpg

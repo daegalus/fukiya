@@ -7,11 +7,11 @@ class FukiyaMiddle {
     middlewares = new List<FukiyaMiddleware>();
   }
 
-  void add(FukiyaMiddleware middleware) {
+  void _add(FukiyaMiddleware middleware) {
     middlewares.add(middleware);
   }
 
-  Future process(FukiyaContext context) {
+  Future _process(FukiyaContext context) {
     Completer completer = new Completer();
     bool done = false;
     middlewares.forEach((value) {

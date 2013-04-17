@@ -27,27 +27,53 @@ class Fukiya {
     _middle = new FukiyaMiddle();
   }
 
+  /**
+   * Creates a handler that handles a GET method call for the provided URI path.
+   *
+   * Takes a [path] of the uri to handle and a [handler] function that gets called when the path matches.
+   */
   void get(String path, Function handler) {
-    _router.addRoute("GET", path, handler);
+    _router._addRoute("GET", path, handler);
   }
 
+  /**
+   * Creates a handler that handles a POST method call for the provided URI path.
+   *
+   * Takes a [path] of the uri to handle and a [handler] function that gets called when the path matches.
+   */
   void post(String path, Function handler) {
-    _router.addRoute("POST", path, handler);
+    _router._addRoute("POST", path, handler);
   }
 
+  /**
+   * Creates a handler that handles a PUT method call for the provided URI path.
+   *
+   * Takes a [path] of the uri to handle and a [handler] function that gets called when the path matches.
+   */
   void put(String path, Function handler) {
-    _router.addRoute("PUT", path, handler);
+    _router._addRoute("PUT", path, handler);
   }
 
+  /**
+   * Creates a handler that handles a DELETE method call for the provided URI path.
+   *
+   * Takes a [path] of the uri to handle and a [handler] function that gets called when the path matches.
+   */
   void delete(String path, Function handler) {
-    _router.addRoute("DELETE", path, handler);
+    _router._addRoute("DELETE", path, handler);
   }
 
+  /**
+   * Activates static file handling and uses the [basePath] as a prefix to lookup the file.
+   */
   void staticFiles(String basePath) {
     _router.useStaticFileHandling = true;
     _router.staticFilePath = basePath;
   }
 
+  /**
+   * Creates an HttpServer that binds to the [host] and [port] provided. This also activates listening.
+   */
   void listen(host, port) {
     use(new FukiyaCloser());
     HttpServer.bind(host, port).then((HttpServer httpServer) {
@@ -55,8 +81,8 @@ class Fukiya {
 
       _server.listen((HttpRequest request) {
         FukiyaContext context = new FukiyaContext(request);
-        _middle.process(context).then((innerContext) {
-          _router.route(innerContext);
+        _middle._process(context).then((innerContext) {
+          _router._route(innerContext);
         });
 
       }, onError: (error) {
@@ -67,14 +93,24 @@ class Fukiya {
     });
   }
 
+  /**
+   * Adds a provided [middleware] to the active set of middlewares that process and work on every request if it matches
+   * the conditions set in the middleware.
+   */
   void use(FukiyaMiddleware middleware) {
-    _middle.add(middleware);
+    _middle._add(middleware);
   }
 
+  /**
+   * Returns the local [HttpServer] inside the Fukiya instance if you want it for direct access.
+   */
   HttpServer httpServer() {
     return _server;
   }
 
+  /**
+   * Shuts down the HttpServer.
+   */
   void stop() {
     _server.close();
   }

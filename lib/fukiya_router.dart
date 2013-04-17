@@ -11,13 +11,13 @@ class FukiyaRouter {
     staticFilePath = "";
   }
 
-  void addRoute(String method, String path, Function handler) {
+  void _addRoute(String method, String path, Function handler) {
     _routes.add(new FukiyaRequestHandler(method, path, handler));
   }
 
-  void route(FukiyaContext context) {
+  void _route(FukiyaContext context) {
     List<FukiyaRequestHandler> filteredRoutes = _routes.where((FukiyaRequestHandler route) {
-      return (route.method == context.request.method) && route.matches(context);
+      return (route.method == context.request.method) && route._matches(context);
     }).toList();
 
     FukiyaRequestHandler finalRoute = prioritizeRouter(context, filteredRoutes);
@@ -28,20 +28,20 @@ class FukiyaRouter {
       file.exists().then((exists) {
         if (exists) {
           file.readAsBytes().then((value) {
-            context.response.writeBytes(value.toList());
+            context.response.add(value);
             context.response.done.catchError((e) => print("File Response error: ${e}"));
             context.response.close();
           }, onError:(error) => print(error));
 
         } else if (finalRoute != null) {
-          finalRoute.handle(context);
+          finalRoute._handle(context);
         } else {
           context.response.statusCode = HttpStatus.NOT_FOUND;
           context.response.close();
         }
       });
     } else if (finalRoute != null) {
-      finalRoute.handle(context);
+      finalRoute._handle(context);
     } else {
       context.response.statusCode = HttpStatus.NOT_FOUND;
       context.response.close();

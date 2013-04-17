@@ -107,7 +107,7 @@ class FukiyaPostTests {
           sendData..addAll(postData.codeUnits)..addAll(CryptoUtils.bytesToBase64(fileData).codeUnits)..addAll(endPostData.codeUnits);
 
           request.contentLength = sendData.length;
-          request.writeBytes(sendData);
+          request.add(sendData);
           return request.close();
 
         }).then((HttpClientResponse response) {
@@ -159,7 +159,7 @@ class FukiyaPostTests {
 
 
           request.contentLength = sendData.length;
-          request.writeBytes(sendData);
+          request.add(sendData);
           return request.close();
 
         }).then((HttpClientResponse response) {
