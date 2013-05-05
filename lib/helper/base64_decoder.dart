@@ -1,5 +1,5 @@
 library Base64Decoder;
-import 'dart:typeddata';
+import 'dart:typed_data';
 
 class Base64Decoder {
 

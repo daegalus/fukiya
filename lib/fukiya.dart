@@ -4,7 +4,7 @@ import 'dart:collection';
 import 'dart:async';
 import 'dart:json' as JSON;
 import 'dart:crypto';
-import 'dart:typeddata';
+import 'dart:typed_data';
 import 'package:formler/formler.dart';
 import 'helper/base64_decoder.dart';
 part 'fukiya_request_handler.dart';
