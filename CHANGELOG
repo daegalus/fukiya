@@ -1,3 +1,7 @@
+v0.1.1
+- Merged typed-data name fix
+- Uses new version of Formler
+
 v0.1.0
 - Updated for M4 changes.
 - I think this is 0.1 ready. So bumping to 0.1.

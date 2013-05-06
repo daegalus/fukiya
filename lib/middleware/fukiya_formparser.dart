@@ -2,8 +2,6 @@ part of fukiya;
 
 class FukiyaFormParser implements FukiyaMiddleware {
 
-  Base64Decoder b64d = new Base64Decoder();
-
   String getName() {
     return "FukiyaFormParser";
   }
