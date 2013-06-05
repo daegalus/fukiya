@@ -2,7 +2,7 @@ library fukiyPostTests;
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:async';
-import 'dart:crypto';
+import 'package:crypto/crypto.dart';
 import 'package:unittest/unittest.dart';
 
 class FukiyaPostTests {
