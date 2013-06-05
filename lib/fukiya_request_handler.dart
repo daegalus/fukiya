@@ -34,7 +34,7 @@ class FukiyaRequestHandler {
 
   bool _match(String pathNode, String reqNode, FukiyaContext context) {
     if (pathNode.startsWith(':') && reqNode != "" && reqNode != 'favicon.ico') {
-      context.request.queryParameters[pathNode.replaceAll(':', '')] = reqNode;
+      context.request.uri.queryParameters[pathNode.replaceAll(':', '')] = reqNode;
       return true;
     }
     return (pathNode.startsWith(':') && reqNode != "" && reqNode != 'favicon.ico') ? true : pathNode == reqNode;
