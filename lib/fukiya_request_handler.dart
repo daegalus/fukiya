@@ -14,7 +14,7 @@ class FukiyaRequestHandler {
   bool _matches(FukiyaContext context) {
     if(context.request.method == method) {
       List<String> pathSegments = path.split('/');
-      List<String> reqPathSegments = context.request.uri.path.split('/');
+      List<String> reqPathSegments = context.request.uri.pathSegments;
 
       if(pathSegments.length == reqPathSegments.length) {
         for(int i = 0; i<pathSegments.length; i++) {
@@ -34,7 +34,7 @@ class FukiyaRequestHandler {
 
   bool _match(String pathNode, String reqNode, FukiyaContext context) {
     if (pathNode.startsWith(':') && reqNode != "" && reqNode != 'favicon.ico') {
-      context.request.uri.queryParameters[pathNode.replaceAll(':', '')] = reqNode;
+      context.params[pathNode.replaceAll(':', '')] = reqNode;
       return true;
     }
     return (pathNode.startsWith(':') && reqNode != "" && reqNode != 'favicon.ico') ? true : pathNode == reqNode;
