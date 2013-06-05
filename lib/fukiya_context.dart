@@ -14,7 +14,7 @@ class FukiyaContext {
   FukiyaContext(HttpRequest request) {
     this.request = request;
     response = request.response;
-    params = request.uri.queryParameters;
+    params = new Map.from(request.uri.queryParameters);
     data = new HashMap();
     parsedBody = new HashMap();
   }
