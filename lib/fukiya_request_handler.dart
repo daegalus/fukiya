@@ -14,7 +14,7 @@ class FukiyaRequestHandler {
   bool _matches(FukiyaContext context) {
     if(context.request.method == method) {
       List<String> pathSegments = path.split('/');
-      List<String> reqPathSegments = context.request.uri.pathSegments;
+      List<String> reqPathSegments = context.request.uri.path.split('/');
 
       if(pathSegments.length == reqPathSegments.length) {
         for(int i = 0; i<pathSegments.length; i++) {

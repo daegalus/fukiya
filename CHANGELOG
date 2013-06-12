@@ -1,3 +1,6 @@
+v0.1.5
+- Fixing breakage in path.pathSegments. Reverted back to path.split('/')
+
 v0.1.4
 - Fixing immutable map problem with queryParameters.
 
