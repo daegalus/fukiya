@@ -1,5 +1,5 @@
 name: fukiya
-version: 0.1.5
+version: 0.1.6
 author: Yulian Kuncheff <yulian@kuncheff.com>
 description: A simple framework to improve and simplify the creation of server-side dart applications.
 homepage: https://github.com/Daegalus/fukiya
@@ -8,3 +8,4 @@ dependencies:
   unittest: any
   logging: any
   crypto: any
+  static_file_handler: any

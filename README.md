@@ -5,7 +5,7 @@ Fukiya
 Simple framework for making dart server applications easier to write. Long way to go, this is very simple.
 Proper documentation will be written when the library matures a bit more.
 
-For a practicle example, look at fukiya_test.dart in the test directory.
+For a practical example, look at fukiya_*_test.dart tests in the test directory.
 
 Example usage:
 ```dart

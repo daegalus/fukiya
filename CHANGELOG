@@ -1,3 +1,8 @@
+v0.1.6
+- Changed static file handling to use the wonderful [library](https://github.com/DanieleSalatti/static-file-handler) created by Daniele Salatti.
+- Added functions to be able to add MimeTypes to the StaticFileHandler library from Fukiya.
+- Added additional test to make sure static file handling overrode any other paths.
+
 v0.1.5
 - Fixing breakage in path.pathSegments. Reverted back to path.split('/')
 

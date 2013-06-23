@@ -6,6 +6,7 @@ import 'dart:json' as JSON;
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:formler/formler.dart';
+import 'package:static_file_handler/static_file_handler.dart';
 part 'fukiya_request_handler.dart';
 part 'fukiya_router.dart';
 part 'fukiya_context.dart';
@@ -68,6 +69,26 @@ class Fukiya {
   void staticFiles(String basePath) {
     _router.useStaticFileHandling = true;
     _router.staticFilePath = basePath;
+    _router.staticFileHandler = new StaticFileHandler(basePath);
+  }
+
+/**
+   * Adds additional mime types to the static file handler's mime types list in addition to the existing ones.
+   */
+  void addMimeType(String extension, String mimeType) {
+    if (_router.staticFileHandler != null) {
+      _router.staticFileHandler.addMIMETypes({ "$extension": mimeType});
+    }
+  }
+
+  /**
+   * Adds additional mime types to the static file handler's mime types list in addition to the existing ones.
+   */
+  void addMimeTypes(Map<String, String> mimeTypes) {
+    if (_router.staticFileHandler != null) {
+      _router.staticFileHandler.addMIMETypes(mimeTypes);
+    }
+    print(_router.staticFileHandler);
   }
 
   /**

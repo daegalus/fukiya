@@ -29,6 +29,8 @@ void main() {
      ..post('/:userid', postDynamicHandler)
      ..post('/postData', postFileDataHandler)
      ..staticFiles('./test/static')
+     ..addMimeType('ogg', 'video/ogg')
+     ..addMimeTypes({'opus': 'audio/opus', 'mkv': 'video/x-matroska'})
      ..use(new FukiyaFormParser())
      ..use(new FukiyaJsonParser())
      ..listen('127.0.0.1', 3333);

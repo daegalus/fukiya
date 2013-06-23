@@ -86,6 +86,26 @@ class FukiyaGetTests {
           },
           onDone: () {
             expect(finalString, equals("Test"));
+          });
+        });
+      });
+      atest();
+    });
+
+    test('Simple GET Static File and overrides dynamic get', () {
+      String finalString = "";
+      var atest = expectAsync0(() {
+        client.get("127.0.0.1", 3333, "/something.txt").then((HttpClientRequest request) {
+          return request.close();
+
+        }).then((HttpClientResponse response) {
+          response.transform(new StringDecoder())
+          .transform(new LineTransformer())
+          .listen((String result) {
+            finalString += result;
+          },
+          onDone: () {
+            expect(finalString, equals("Testing 123;"));
             completer.complete(true);
           });
         });

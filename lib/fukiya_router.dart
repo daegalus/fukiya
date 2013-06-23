@@ -4,11 +4,13 @@ class FukiyaRouter {
   List<FukiyaRequestHandler> _routes;
   bool useStaticFileHandling;
   String staticFilePath;
+  StaticFileHandler staticFileHandler;
 
   FukiyaRouter() {
     _routes = new List<FukiyaRequestHandler>();
     useStaticFileHandling = false;
     staticFilePath = "";
+    staticFileHandler = new StaticFileHandler.serveFolder(staticFilePath);
   }
 
   void _addRoute(String method, String path, Function handler) {
@@ -22,17 +24,19 @@ class FukiyaRouter {
 
     FukiyaRequestHandler finalRoute = prioritizeRouter(context, filteredRoutes);
 
-    var static = false;
+/*    if (finalRoute != null) {
+      finalRoute._handle(context);
+    } else if (useStaticFileHandling && context.request.method == "GET") {
+      staticFileHandler.handleRequest(httpRequest);
+    } else {
+      context.response.statusCode = HttpStatus.NOT_FOUND;
+      context.response.close();
+    }*/
     if (useStaticFileHandling && context.request.method == "GET") {
       var file = new File(staticFilePath + context.request.uri.path);
       file.exists().then((exists) {
         if (exists) {
-          file.readAsBytes().then((value) {
-            context.response.add(value);
-            context.response.done.catchError((e) => print("File Response error: ${e}"));
-            context.response.close();
-          }, onError:(error) => print(error));
-
+          staticFileHandler.handleRequest(context.request);
         } else if (finalRoute != null) {
           finalRoute._handle(context);
         } else {
