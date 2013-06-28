@@ -89,7 +89,6 @@ class Fukiya {
     if (_router.staticFileHandler != null) {
       _router.staticFileHandler.addMIMETypes(mimeTypes);
     }
-    print(_router.staticFileHandler);
   }
 
   /**

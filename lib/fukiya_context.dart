@@ -24,7 +24,7 @@ class FukiyaContext {
    */
   void send(String output) {
     response.write(output);
-    response.done.catchError((e) => print("Error sending response ${e}"));
+    response.done.catchError((e) => print("[Fukiya][Error] Error sending response ${e}"));
     response.close();
   }
 
@@ -34,7 +34,7 @@ class FukiyaContext {
   void jsonResponse(output) {
     response.headers.contentType  = new ContentType("application", "json", charset: "utf-8");
     response.write(JSON.stringify(output));
-    response.done.catchError((e) => print("Error sending response ${e}"));
+    response.done.catchError((e) => print("[Fukiya][Error] Error sending JSON response ${e}"));
     response.close();
   }
 
