@@ -1,3 +1,7 @@
+v0.1.7
+- Fixed bug where if there is an exception in the handler, it will crash the server. It now should not do that.
+- Added a new jsonResponse function to the context. When passed a JSONifiable object/map it will JSONify it and send it with appropriate contenttype headers.
+
 v0.1.6
 - Changed static file handling to use the wonderful [library](https://github.com/DanieleSalatti/static-file-handler) created by Daniele Salatti.
 - Added functions to be able to add MimeTypes to the StaticFileHandler library from Fukiya.

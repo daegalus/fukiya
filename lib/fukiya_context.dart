@@ -29,6 +29,16 @@ class FukiyaContext {
   }
 
   /**
+   * Sends the string as JSON output and closes the response.
+   */
+  void jsonResponse(output) {
+    response.headers.contentType  = new ContentType("application", "json", charset: "utf-8");
+    response.write(JSON.stringify(output));
+    response.done.catchError((e) => print("Error sending response ${e}"));
+    response.close();
+  }
+
+  /**
    * Sends a 302 Moved Temporarily redirect as a response to the URL provided.
    */
   void redirect(String url) {

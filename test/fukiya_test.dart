@@ -44,6 +44,7 @@ void main() {
 
 void getHandler(FukiyaContext context) {
   context.send("GET OK");
+  throw new Exception("This is a successful test exception catch for GET /");
 }
 
 void putHandler(FukiyaContext context) {

@@ -24,14 +24,6 @@ class FukiyaRouter {
 
     FukiyaRequestHandler finalRoute = prioritizeRouter(context, filteredRoutes);
 
-/*    if (finalRoute != null) {
-      finalRoute._handle(context);
-    } else if (useStaticFileHandling && context.request.method == "GET") {
-      staticFileHandler.handleRequest(httpRequest);
-    } else {
-      context.response.statusCode = HttpStatus.NOT_FOUND;
-      context.response.close();
-    }*/
     if (useStaticFileHandling && context.request.method == "GET") {
       var file = new File(staticFilePath + context.request.uri.path);
       file.exists().then((exists) {
