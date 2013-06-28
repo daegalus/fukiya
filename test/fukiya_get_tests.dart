@@ -106,6 +106,27 @@ class FukiyaGetTests {
           },
           onDone: () {
             expect(finalString, equals("Testing 123;"));
+          });
+        });
+      });
+      atest();
+    });
+
+    test('Simple GET Json Request', () {
+      String finalString = "";
+      var atest = expectAsync0(() {
+        client.get("127.0.0.1", 3333, "/jsontest").then((HttpClientRequest request) {
+          return request.close();
+
+        }).then((HttpClientResponse response) {
+          response.transform(new StringDecoder())
+          .transform(new LineTransformer())
+          .listen((String result) {
+            finalString += result;
+          },
+          onDone: () {
+            expect(finalString, equals("{\"test\":\"Yulian\",\"lastTest\":{\"test\":\"Yulian\",\"lastTest\":\"Kuncheff\"}}"));
+            expect(response.headers.contentType.mimeType, "application/json");
             completer.complete(true);
           });
         });

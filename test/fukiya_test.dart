@@ -20,6 +20,7 @@ void main() {
      ..get('/testing', (FukiyaContext context) {
        context.send("GET OK - testing");
      })
+     ..get('/jsontest', getJsonHandler)
      ..get('/:userid', getDynamicHandler)
      ..get('/:module/:controller/:action', (FukiyaContext context) {
        context.send("Test");
@@ -45,6 +46,13 @@ void main() {
 void getHandler(FukiyaContext context) {
   context.send("GET OK");
   throw new Exception("This is a successful test exception catch for GET /");
+}
+
+void getJsonHandler(FukiyaContext context) {
+  Map<String, String> map = {};
+  map['test'] = 'Yulian';
+  map['lastTest'] = { "test": "Yulian", "lastTest": "Kuncheff" };
+  context.jsonResponse(map);
 }
 
 void putHandler(FukiyaContext context) {
