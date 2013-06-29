@@ -41,12 +41,15 @@ class FukiyaRequestHandler {
   }
 
   void _handle(FukiyaContext context) {
-    try {
-      _handler(context);
-    } catch (error) {
+    runZonedExperimental(() {
+      new Future(() {
+        _handler(context);
+      });
+    },
+    onError: (error) {
       //TODO: Change these to use a Logger once I figure out how to get a Logger to always print, even in tests.
       print("[Fukiya][Error] There was an error handling the request with handler for $method $path.");
       print("[Fukiya][Error] $error");
-    }
+    });
   }
 }
