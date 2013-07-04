@@ -29,6 +29,7 @@ void main() {
      ..delete('/:userid', deleteDynamicHandler)
      ..post('/:userid', postDynamicHandler)
      ..post('/postData', postFileDataHandler)
+     ..get('/error', getHandlerErrorThrow)
      ..staticFiles('./test/static')
      ..addMimeType('ogg', 'video/ogg')
      ..addMimeTypes({'opus': 'audio/opus', 'mkv': 'video/x-matroska'})
@@ -46,6 +47,10 @@ void main() {
 void getHandler(FukiyaContext context) {
   context.send("GET OK");
   throw new Exception("This is a successful test exception catch for GET /");
+}
+
+void getHandlerErrorThrow(FukiyaContext context) {
+  throw new Exception("Actual failure and returns 500");
 }
 
 void getJsonHandler(FukiyaContext context) {

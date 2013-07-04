@@ -133,6 +133,27 @@ class FukiyaGetTests {
       });
       atest();
     });
+
+    test('Simple GET Request 500 Error', () {
+      String finalString = "";
+      var atest = expectAsync0(() {
+        client.get("127.0.0.1", 3333, "/error").then((HttpClientRequest request) {
+          return request.close();
+
+        }).then((HttpClientResponse response) {
+          response.transform(new StringDecoder())
+          .transform(new LineTransformer())
+          .listen((String result) {
+            finalString += result;
+          },
+          onDone: () {
+            expect(response.statusCode, HttpStatus.INTERNAL_SERVER_ERROR);
+            expect(finalString, equals("500 Internal Server Error"));
+          });
+        });
+      });
+      atest();
+    });
     return completer.future;
   }
 }
