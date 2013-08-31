@@ -1,5 +1,6 @@
 library fukiyPostTests;
 import 'dart:io';
+import 'dart:utf';
 import 'dart:isolate';
 import 'dart:async';
 import 'package:crypto/crypto.dart';
@@ -21,8 +22,7 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8DecoderTransformer())
             .listen((String result) {
               finalString += result;
             },
@@ -44,8 +44,7 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8DecoderTransformer())
             .listen((String result) {
               finalString += result;
             },
@@ -68,8 +67,7 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8DecoderTransformer())
             .listen((String result) {
               finalString += result;
             },
@@ -111,8 +109,7 @@ class FukiyaPostTests {
           return request.close();
 
         }).then((HttpClientResponse response) {
-          response.transform(new StringDecoder())
-          .transform(new LineTransformer())
+          response.transform(new Utf8DecoderTransformer())
           .listen((String result) {
             finalString += result;
           },
@@ -163,8 +160,7 @@ class FukiyaPostTests {
           return request.close();
 
         }).then((HttpClientResponse response) {
-          response.transform(new StringDecoder())
-          .transform(new LineTransformer())
+          response.transform(new Utf8DecoderTransformer())
           .listen((String result) {
             finalString += result;
           },

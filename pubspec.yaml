@@ -8,4 +8,7 @@ dependencies:
   unittest: any
   logging: any
   crypto: any
-  static_file_handler: any
+  static_file_handler:
+    git:
+      url: https://github.com/financeCoding/static-file-handler.git
+      ref: update_latest_sdk

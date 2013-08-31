@@ -54,7 +54,7 @@ void getHandlerErrorThrow(FukiyaContext context) {
 }
 
 void getJsonHandler(FukiyaContext context) {
-  Map<String, String> map = {};
+  Map<String, dynamic> map = {};
   map['test'] = 'Yulian';
   map['lastTest'] = { "test": "Yulian", "lastTest": "Kuncheff" };
   context.jsonResponse(map);
