@@ -1,7 +1,6 @@
 library fukiyPostTests;
 import 'dart:io';
-import 'dart:utf';
-import 'dart:isolate';
+import 'dart:convert';
 import 'dart:async';
 import 'package:crypto/crypto.dart';
 import 'package:unittest/unittest.dart';
@@ -22,7 +21,7 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new Utf8DecoderTransformer())
+            response.transform(new Utf8Decoder())
             .listen((String result) {
               finalString += result;
             },
@@ -44,7 +43,7 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new Utf8DecoderTransformer())
+            response.transform(new Utf8Decoder())
             .listen((String result) {
               finalString += result;
             },
@@ -67,7 +66,7 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new Utf8DecoderTransformer())
+            response.transform(new Utf8Decoder())
             .listen((String result) {
               finalString += result;
             },
@@ -109,7 +108,7 @@ class FukiyaPostTests {
           return request.close();
 
         }).then((HttpClientResponse response) {
-          response.transform(new Utf8DecoderTransformer())
+          response.transform(new Utf8Decoder())
           .listen((String result) {
             finalString += result;
           },
@@ -160,7 +159,7 @@ class FukiyaPostTests {
           return request.close();
 
         }).then((HttpClientResponse response) {
-          response.transform(new Utf8DecoderTransformer())
+          response.transform(new Utf8Decoder())
           .listen((String result) {
             finalString += result;
           },
