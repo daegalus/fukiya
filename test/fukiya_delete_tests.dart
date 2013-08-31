@@ -18,6 +18,7 @@ class FukiyaDeleteTests {
 
           }).then((HttpClientResponse response) {
             response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
@@ -37,6 +38,7 @@ class FukiyaDeleteTests {
 
           }).then((HttpClientResponse response) {
             response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
@@ -58,6 +60,7 @@ class FukiyaDeleteTests {
 
           }).then((HttpClientResponse response) {
             response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
