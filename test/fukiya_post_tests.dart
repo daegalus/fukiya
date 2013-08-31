@@ -1,6 +1,6 @@
 library fukiyPostTests;
 import 'dart:io';
-import 'dart:isolate';
+import 'dart:convert';
 import 'dart:async';
 import 'package:crypto/crypto.dart';
 import 'package:unittest/unittest.dart';
@@ -21,8 +21,8 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
@@ -44,8 +44,8 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
@@ -68,8 +68,8 @@ class FukiyaPostTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
@@ -111,8 +111,8 @@ class FukiyaPostTests {
           return request.close();
 
         }).then((HttpClientResponse response) {
-          response.transform(new StringDecoder())
-          .transform(new LineTransformer())
+          response.transform(new Utf8Decoder())
+          .transform(new LineSplitter())
           .listen((String result) {
             finalString += result;
           },
@@ -163,8 +163,8 @@ class FukiyaPostTests {
           return request.close();
 
         }).then((HttpClientResponse response) {
-          response.transform(new StringDecoder())
-          .transform(new LineTransformer())
+          response.transform(new Utf8Decoder())
+          .transform(new LineSplitter())
           .listen((String result) {
             finalString += result;
           },
