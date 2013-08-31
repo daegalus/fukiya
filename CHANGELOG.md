@@ -1,3 +1,6 @@
+v0.1.10
+- Updated for the latest changes in Dart. Thanks to [Adam Singer](https://github.com/financeCoding) for the help.
+
 v0.1.9
 - Return 500 on uncaught exception in Zone. If the response isn't already closed, it will set the status to 500 and close it.
 
