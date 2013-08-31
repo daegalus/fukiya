@@ -17,8 +17,8 @@ class FukiyaJsonParser implements FukiyaMiddleware {
 
   void _parseJsonBody(FukiyaContext context, Completer completer) {
     List<String> lines = new List<String>();
-    context.request.transform(new StringDecoder())
-                   .transform(new LineTransformer())
+    context.request.transform(new Utf8Decoder())
+                   .transform(new LineSplitter())
                    .listen((String line) {
                      lines.add(line);
                    },

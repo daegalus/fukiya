@@ -4,9 +4,7 @@ import 'fukiya_delete_tests.dart';
 import 'fukiya_post_tests.dart';
 import 'fukiya_put_tests.dart';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:async';
-import 'package:unittest/unittest.dart';
 
 void main() {
   Fukiya app = new Fukiya();
@@ -54,7 +52,7 @@ void getHandlerErrorThrow(FukiyaContext context) {
 }
 
 void getJsonHandler(FukiyaContext context) {
-  Map<String, String> map = {};
+  Map<String, dynamic> map = {};
   map['test'] = 'Yulian';
   map['lastTest'] = { "test": "Yulian", "lastTest": "Kuncheff" };
   context.jsonResponse(map);

@@ -1,6 +1,6 @@
 library fukiyPutTests;
 import 'dart:io';
-import 'dart:isolate';
+import 'dart:convert';
 import 'dart:async';
 import 'package:unittest/unittest.dart';
 
@@ -20,8 +20,8 @@ class FukiyaPutTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
@@ -43,8 +43,8 @@ class FukiyaPutTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
@@ -67,8 +67,8 @@ class FukiyaPutTests {
             return request.close();
 
           }).then((HttpClientResponse response) {
-            response.transform(new StringDecoder())
-            .transform(new LineTransformer())
+            response.transform(new Utf8Decoder())
+            .transform(new LineSplitter())
             .listen((String result) {
               finalString += result;
             },
