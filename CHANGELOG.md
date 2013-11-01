@@ -1,3 +1,6 @@
+v0.1.12
+- runZonedExperimental is now runZoned
+
 v0.1.11
 - Updated imports to handle change of JSON being removed from SDK libraries and put in PUB.
 

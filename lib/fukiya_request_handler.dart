@@ -41,7 +41,7 @@ class FukiyaRequestHandler {
   }
 
   void _handle(FukiyaContext context) {
-    runZonedExperimental(() {
+    runZoned(() {
       new Future(() {
         _handler(context);
       });
