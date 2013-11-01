@@ -1,3 +1,6 @@
+v0.1.11
+- Updated imports to handle change of JSON being removed from SDK libraries and put in PUB.
+
 v0.1.10
 - Updated for the latest changes in Dart. Thanks to [Adam Singer](https://github.com/financeCoding) for the help.
 

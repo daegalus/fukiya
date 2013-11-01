@@ -2,7 +2,7 @@ library fukiya;
 import 'dart:io';
 import 'dart:collection';
 import 'dart:async';
-import 'dart:json' as JSON;
+import 'package:json/json.dart' as JSON;
 import 'dart:convert';
 import 'package:formler/formler.dart';
 import 'package:static_file_handler/static_file_handler.dart';
