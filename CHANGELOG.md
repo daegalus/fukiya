@@ -1,3 +1,6 @@
+v0.1.13
+- Fix problem with runZoned presented in trunk for future versions.
+
 v0.1.12
 - runZonedExperimental is now runZoned
 
