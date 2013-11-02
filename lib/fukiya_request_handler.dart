@@ -50,11 +50,12 @@ class FukiyaRequestHandler {
       //TODO: Change these to use a Logger once I figure out how to get a Logger to always print, even in tests.
       print("[Fukiya][Error] There was an error handling the request with handler for $method $path.");
       print("[Fukiya][Error] $error");
-      context.response.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
       try {
+        context.response.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         context.response.write("500 Internal Server Error");
+        context.response.close();
       } catch (error) {}
-      context.response.close();
+
     });
   }
 }
