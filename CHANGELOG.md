@@ -1,3 +1,6 @@
+v0.1.14
+- Moving the stream close to finally block. Changing printlns to Logger output.
+
 v0.1.13
 - Fix problem with runZoned presented in trunk for future versions.
 

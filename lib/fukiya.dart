@@ -2,8 +2,9 @@ library fukiya;
 import 'dart:io';
 import 'dart:collection';
 import 'dart:async';
-import 'package:json/json.dart' as JSON;
 import 'dart:convert';
+import 'package:json/json.dart' as JSON;
+import 'package:log4dart/log4dart.dart';
 import 'package:formler/formler.dart';
 import 'package:static_file_handler/static_file_handler.dart';
 part 'fukiya_request_handler.dart';
@@ -17,6 +18,9 @@ part 'middleware/fukiya_fileparser.dart';
 part 'middleware/fukiya_closer.dart';
 
 class Fukiya {
+  
+  static final _logger = LoggerFactory.getLoggerFor(Fukiya);
+  
   HttpServer _server;
   FukiyaRouter _router;
   FukiyaMiddle _middle;
@@ -104,10 +108,10 @@ class Fukiya {
         });
 
       }, onError: (error) {
-        print("[Fukiya] Error: ${error.stackTrace}");
+        _logger.error("Error: ${error.stackTrace}");
       });
 
-      print("[Fukiya] Listening at ${host} on port ${port}");
+      _logger.info("Listening at ${host} on port ${port}");
     });
   }
 

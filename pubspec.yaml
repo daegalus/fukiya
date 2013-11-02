@@ -10,3 +10,4 @@ dependencies:
   crypto: any
   static_file_handler: any
   json: any
+  log4dart: any
