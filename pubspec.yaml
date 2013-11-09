@@ -1,13 +1,15 @@
 name: fukiya
-version: 0.1.14
+version: 0.2.0
 author: Yulian Kuncheff <yulian@kuncheff.com>
 description: A simple framework to improve and simplify the creation of server-side dart applications.
 homepage: https://github.com/Daegalus/fukiya
+environment:
+  sdk: ">=0.8.10+6 <2.0.0"
 dependencies:
-  formler: any
-  unittest: any
-  logging: any
-  crypto: any
-  static_file_handler: any
-  json: any
-  log4dart: any
+  formler: 0.1.0
+  unittest: ">=0.9.0 < 0.10.0"
+  logging: ">=0.9.0 < 0.10.0"
+  crypto: ">=0.9.0 < 0.10.0"
+  static_file_handler: ">=0.1.3"
+  json: ">=0.9.0 < 0.10.0"
+  log4dart: ">=1.4.11"
