@@ -65,6 +65,15 @@ class Fukiya {
   void delete(String path, Function handler) {
     _router._addRoute("DELETE", path, handler);
   }
+  
+  /**
+   * Creates a handler that handles a OPTIONS method call for the provided URI path.
+   *
+   * Takes a [path] of the uri to handle and a [handler] function that gets called when the path matches.
+   */
+  void options(String path, Function handler) {
+    _router._addRoute("OPTIONS", path, handler);
+  }
 
   /**
    * Activates static file handling and uses the [basePath] as a prefix to lookup the file.

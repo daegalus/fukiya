@@ -3,6 +3,7 @@ import 'fukiya_get_tests.dart';
 import 'fukiya_delete_tests.dart';
 import 'fukiya_post_tests.dart';
 import 'fukiya_put_tests.dart';
+import 'fukiya_options_tests.dart';
 import 'dart:io';
 import 'dart:async';
 
@@ -11,8 +12,12 @@ void main() {
   app..get('/', getHandler)
      ..put('/', putHandler)
      ..delete('/', deleteHandler)
+     ..options('/', optionsHandler)
      ..delete('/testing', (FukiyaContext context) {
        context.send("DELETE OK - testing");
+     })
+     ..options('/testing', (FukiyaContext context) {
+       context.send("OPTIONS OK - testing");
      })
      ..post('/', postHandler)
      ..get('/testing', (FukiyaContext context) {
@@ -25,6 +30,7 @@ void main() {
      })
      ..put('/:userid', putDynamicHandler)
      ..delete('/:userid', deleteDynamicHandler)
+     ..options('/:userid', optionsDynamicHandler)
      ..post('/:userid', postDynamicHandler)
      ..post('/postData', postFileDataHandler)
      ..get('/error', getHandlerErrorThrow)
@@ -38,7 +44,8 @@ void main() {
   FukiyaGetTests.runTests().then((bool status) => status);
   FukiyaPostTests.runTests().then((bool status) => status);
   FukiyaPutTests.runTests().then((bool status) => status);
-  FukiyaDeleteTests.runTests().then((bool status) => app.stop());
+  FukiyaDeleteTests.runTests().then((bool status) => status);
+  FukiyaOptionsTests.runTests().then((bool status) => app.stop());
 
 }
 
@@ -66,6 +73,10 @@ void deleteHandler(FukiyaContext context) {
   context.send("DELETE OK");
 }
 
+void optionsHandler(FukiyaContext context) {
+  context.send("OPTIONS OK");
+}
+
 void postHandler(FukiyaContext context) {
   context.send("POST OK ${context.parsedBody['username']} - ${context.parsedBody['password']}");
 }
@@ -80,6 +91,10 @@ void putDynamicHandler(FukiyaContext context) {
 
 void deleteDynamicHandler(FukiyaContext context) {
   context.send("Dynamic DELETE OK ${context.params['userid']}");
+}
+
+void optionsDynamicHandler(FukiyaContext context) {
+  context.send("Dynamic OPTIONS OK ${context.params['userid']}");
 }
 
 void postDynamicHandler(FukiyaContext context) {
