@@ -35,10 +35,7 @@ void main() {
      ..post('/postData', postFileDataHandler)
      ..get('/error', getHandlerErrorThrow)
      ..staticFiles('./test/static')
-     ..addMimeType('ogg', 'video/ogg')
-     ..addMimeTypes({'opus': 'audio/opus', 'mkv': 'video/x-matroska'})
-     ..use(new FukiyaFormParser())
-     ..use(new FukiyaJsonParser())
+     ..use(new FukiyaBodyParser())
      ..listen('127.0.0.1', 3333);
 
   FukiyaGetTests.runTests().then((bool status) => status);

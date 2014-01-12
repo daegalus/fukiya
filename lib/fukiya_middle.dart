@@ -1,6 +1,8 @@
 part of fukiya;
 
 class FukiyaMiddle {
+  static final _logger = LoggerFactory.getLoggerFor(FukiyaMiddle);
+
   List<FukiyaMiddleware> middlewares;
 
   FukiyaMiddle() {
@@ -12,13 +14,19 @@ class FukiyaMiddle {
   }
 
   Future _process(FukiyaContext context) {
-    Completer completer = new Completer();
-    bool done = false;
-    middlewares.forEach((value) {
-      if(!done)
-        done = value.process(context, completer);
+    Iterable<Future> middleFutures = middlewares.map((middleware) {
+      return new Future(() {
+        runZoned(() {
+          middleware.process(context);
+        },
+        onError: (e) {
+          _logger.error("Received the following error when running middleware \"${middleware.getName()}\".");
+          _logger.error(e);
+        });
+      });
     });
-    return completer.future;
+
+    return Future.wait(middleFutures);
   }
 }
 

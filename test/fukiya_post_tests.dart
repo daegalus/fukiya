@@ -96,7 +96,7 @@ class FukiyaPostTests {
           '--aab03x\r\n'
           'Content-Disposition: form-data; name="file"; filename="image.jpg"\r\n'
           'Content-Type: image/jpeg\r\n'
-          'Content-Transfer-Encoding: base64\r\n'
+          'Content-Transfer-Encoding: binary\r\n'
           '\r\n';
           String endPostData = '\r\n--aab03x--';
 
@@ -104,7 +104,7 @@ class FukiyaPostTests {
           List<int> fileData = file.readAsBytesSync();
 
           List<int> sendData = new List<int>();
-          sendData..addAll(postData.codeUnits)..addAll(CryptoUtils.bytesToBase64(fileData).codeUnits)..addAll(endPostData.codeUnits);
+          sendData..addAll(postData.codeUnits)..addAll(fileData)..addAll(endPostData.codeUnits);
 
           request.contentLength = sendData.length;
           request.add(sendData);

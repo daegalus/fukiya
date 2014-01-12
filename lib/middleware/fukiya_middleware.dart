@@ -1,7 +1,7 @@
 part of fukiya;
 
 abstract class FukiyaMiddleware {
-  bool process(FukiyaContext context, Completer completer);
+  void process(FukiyaContext context);
   String getName();
 }
 

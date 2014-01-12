@@ -3,14 +3,12 @@ part of fukiya;
 class FukiyaRouter {
   List<FukiyaRequestHandler> _routes;
   bool useStaticFileHandling;
-  String staticFilePath;
-  StaticFileHandler staticFileHandler;
+  VirtualDirectory virtualDir;
 
   FukiyaRouter() {
     _routes = new List<FukiyaRequestHandler>();
     useStaticFileHandling = false;
-    staticFilePath = "";
-    staticFileHandler = new StaticFileHandler.serveFolder(staticFilePath);
+    virtualDir = null;
   }
 
   void _addRoute(String method, String path, Function handler) {
@@ -24,11 +22,12 @@ class FukiyaRouter {
 
     FukiyaRequestHandler finalRoute = prioritizeRouter(context, filteredRoutes);
 
-    if (useStaticFileHandling && context.request.method == "GET") {
-      var file = new File(staticFilePath + context.request.uri.path);
+    if (useStaticFileHandling && virtualDir != null && context.request.method == "GET") {
+      print(virtualDir.root + context.request.uri.path);
+      var file = new File(virtualDir.root + context.request.uri.path);
       file.exists().then((exists) {
         if (exists) {
-          staticFileHandler.handleRequest(context.request);
+          virtualDir.serveRequest(context.request);
         } else if (finalRoute != null) {
           finalRoute._handle(context);
         } else {

@@ -5,7 +5,7 @@ class FukiyaContext {
   HttpResponse response;
   Map params;
   Map parsedBody;
-  Map data;
+  String textBody;
 
   /**
    * Creates a [FukiyaContext] from a provided [HttpRequest]. It allows for additional functionality ontop of the
@@ -15,8 +15,8 @@ class FukiyaContext {
     this.request = request;
     response = request.response;
     params = new Map.from(request.uri.queryParameters);
-    data = new HashMap();
     parsedBody = new HashMap();
+    textBody = "";
   }
 
   /**

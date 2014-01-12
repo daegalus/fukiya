@@ -5,17 +5,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:json/json.dart' as JSON;
 import 'package:log4dart/log4dart.dart';
-import 'package:formler/formler.dart';
-import 'package:static_file_handler/static_file_handler.dart';
+import 'package:mime/mime.dart';
+import 'package:http_server/http_server.dart';
 part 'fukiya_request_handler.dart';
 part 'fukiya_router.dart';
 part 'fukiya_context.dart';
 part 'fukiya_middle.dart';
 part 'middleware/fukiya_middleware.dart';
-part 'middleware/fukiya_formparser.dart';
-part 'middleware/fukiya_jsonparser.dart';
-part 'middleware/fukiya_fileparser.dart';
-part 'middleware/fukiya_closer.dart';
+part 'middleware/fukiya_bodyparser.dart';
 
 class Fukiya {
   
@@ -79,41 +76,23 @@ class Fukiya {
    * Activates static file handling and uses the [basePath] as a prefix to lookup the file.
    */
   void staticFiles(String basePath) {
+    VirtualDirectory vd = new VirtualDirectory(basePath);
+    vd.allowDirectoryListing = false;
     _router.useStaticFileHandling = true;
-    _router.staticFilePath = basePath;
-    _router.staticFileHandler = new StaticFileHandler(basePath);
-  }
-
-  /**
-   * Adds additional mime types to the static file handler's mime types list in addition to the existing ones.
-   */
-  void addMimeType(String extension, String mimeType) {
-    if (_router.staticFileHandler != null) {
-      _router.staticFileHandler.addMIMETypes({ "$extension": mimeType});
-    }
-  }
-
-  /**
-   * Adds additional mime types to the static file handler's mime types list in addition to the existing ones.
-   */
-  void addMimeTypes(Map<String, String> mimeTypes) {
-    if (_router.staticFileHandler != null) {
-      _router.staticFileHandler.addMIMETypes(mimeTypes);
-    }
+    _router.virtualDir = vd;
   }
 
   /**
    * Creates an HttpServer that binds to the [host] and [port] provided. This also activates listening.
    */
   void listen(host, port) {
-    use(new FukiyaCloser());
     HttpServer.bind(host, port).then((HttpServer httpServer) {
       _server = httpServer;
 
       _server.listen((HttpRequest request) {
         FukiyaContext context = new FukiyaContext(request);
-        _middle._process(context).then((innerContext) {
-          _router._route(innerContext);
+        _middle._process(context).then((list) {
+          _router._route(context);
         });
 
       }, onError: (error) {
