@@ -2,6 +2,8 @@
 
 Fukiya
 ======
+
+[![Join the chat at https://gitter.im/Daegalus/fukiya](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Daegalus/fukiya?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Simple framework for making dart server applications easier to write. Long way to go, this is very simple.
 Proper documentation will be written when the library matures a bit more.
 
